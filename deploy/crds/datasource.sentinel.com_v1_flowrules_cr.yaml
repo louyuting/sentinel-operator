@@ -1,0 +1,7 @@
+apiVersion: datasource.sentinel.com/v1
+kind: FlowRules
+metadata:
+  name: example-flowrules
+spec:
+  # Add fields here
+  size: 3

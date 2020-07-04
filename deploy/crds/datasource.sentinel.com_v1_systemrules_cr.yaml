@@ -1,0 +1,7 @@
+apiVersion: datasource.sentinel.com/v1
+kind: SystemRules
+metadata:
+  name: example-systemrules
+spec:
+  # Add fields here
+  size: 3

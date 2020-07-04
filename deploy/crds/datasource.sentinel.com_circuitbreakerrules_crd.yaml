@@ -1,0 +1,98 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: circuitbreakerrules.datasource.sentinel.com
+spec:
+  group: datasource.sentinel.com
+  names:
+    kind: CircuitBreakerRules
+    listKind: CircuitBreakerRulesList
+    plural: circuitbreakerrules
+    singular: circuitbreakerrules
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: CircuitBreakerRules is the Schema for the circuitbreakerrules API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: CircuitBreakerRulesSpec defines the desired state of CircuitBreakerRules
+          properties:
+            rules:
+              description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+                Important: Run "operator-sdk generate k8s" to regenerate code after
+                modifying this file Add custom validation using kubebuilder tags:
+                https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html'
+              items:
+                properties:
+                  errorCountThreshold:
+                    format: int64
+                    type: integer
+                    minimum: 1
+                  errorRatioThreshold:
+                    type: number
+                    format: float
+                  maxAllowedRtMs:
+                    format: int64
+                    type: integer
+                    minimum: 1
+                  maxSlowRequestRatio:
+                    type: number
+                    format: float
+                  minRequestAmount:
+                    format: int64
+                    type: integer
+                    minimum: 1
+                  resource:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                  retryTimeoutMs:
+                    format: int32
+                    type: integer
+                    minimum: 1
+                  statIntervalMs:
+                    format: int32
+                    type: integer
+                    minimum: 1000
+                    maxinum: 100000
+                  strategy:
+                    format: int32
+                    type: integer
+                    enum:
+                    - 0
+                    - 1
+                    - 2
+                required:
+                - minRequestAmount
+                - resource
+                - retryTimeoutMs
+                - statIntervalMs
+                - strategy
+                type: object
+              type: array
+          required:
+          - rules
+          type: object
+        status:
+          description: CircuitBreakerRulesStatus defines the observed state of CircuitBreakerRules
+          type: object
+      type: object
+  version: v1
+  versions:
+  - name: v1
+    served: true
+    storage: true
