@@ -6,21 +6,26 @@ import (
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+type SpecificItem struct {
+	ValKind           int32  `json:"valKind"`
+	ValStr            string `json:"valStr"`
+	SpecificThreshold int64  `json:"specificThreshold"`
+}
 
 type HotspotRule struct {
 	Resource        string `json:"resource"`
 	MetricType      int    `json:"metricType"`
 	ControlBehavior int    `json:"controlBehavior"`
 	// ParamIndex is the index in context arguments slice.
-	ParamIndex int   `json:"paramIndex"`
-	Threshold  int64 `json:"threshold"`
+	ParamIndex int     `json:"paramIndex"`
+	Threshold  float64 `json:"threshold"`
 	// MaxQueueingTimeMs is the max queueing time in Throttling ControlBehavior
 	MaxQueueingTimeMs int64 `json:"maxQueueingTimeMs"`
 	BurstCount        int64 `json:"burstCount"`
 	DurationInSec     int64 `json:"durationInSec"`
 	ParamsMaxCapacity int64 `json:"paramsMaxCapacity"`
 	// compress SpecificValue as string
-	SpecificItems map[string]int64 `json:"specificItems"`
+	SpecificItems []SpecificItem `json:"specificItems"`
 }
 
 // HotspotRulesSpec defines the desired state of HotspotRules

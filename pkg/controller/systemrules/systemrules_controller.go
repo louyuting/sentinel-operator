@@ -1,4 +1,4 @@
-package citcuitbreakerrule
+package systemrules
 
 import (
 	"context"
@@ -19,14 +19,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-var log = logf.Log.WithName("controller_citcuitbreakerrule")
+var log = logf.Log.WithName("controller_systemrules")
 
 /**
 * USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own Controller
 * business logic.  Delete these comments after modifying this file.*
  */
 
-// Add creates a new CitcuitBreakerRule Controller and adds it to the Manager. The Manager will set fields on the Controller
+// Add creates a new SystemRules Controller and adds it to the Manager. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
 func Add(mgr manager.Manager) error {
 	return add(mgr, newReconciler(mgr))
@@ -34,28 +34,28 @@ func Add(mgr manager.Manager) error {
 
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	return &ReconcileCitcuitBreakerRule{client: mgr.GetClient(), scheme: mgr.GetScheme()}
+	return &ReconcileSystemRules{client: mgr.GetClient(), scheme: mgr.GetScheme()}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
 func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	// Create a new controller
-	c, err := controller.New("citcuitbreakerrule-controller", mgr, controller.Options{Reconciler: r})
+	c, err := controller.New("systemrules-controller", mgr, controller.Options{Reconciler: r})
 	if err != nil {
 		return err
 	}
 
-	// Watch for changes to primary resource CitcuitBreakerRule
-	err = c.Watch(&source.Kind{Type: &datasourcev1.CitcuitBreakerRule{}}, &handler.EnqueueRequestForObject{})
+	// Watch for changes to primary resource SystemRules
+	err = c.Watch(&source.Kind{Type: &datasourcev1.SystemRules{}}, &handler.EnqueueRequestForObject{})
 	if err != nil {
 		return err
 	}
 
 	// TODO(user): Modify this to be the types you create that are owned by the primary resource
-	// Watch for changes to secondary resource Pods and requeue the owner CitcuitBreakerRule
+	// Watch for changes to secondary resource Pods and requeue the owner SystemRules
 	err = c.Watch(&source.Kind{Type: &corev1.Pod{}}, &handler.EnqueueRequestForOwner{
 		IsController: true,
-		OwnerType:    &datasourcev1.CitcuitBreakerRule{},
+		OwnerType:    &datasourcev1.SystemRules{},
 	})
 	if err != nil {
 		return err
@@ -64,30 +64,30 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	return nil
 }
 
-// blank assignment to verify that ReconcileCitcuitBreakerRule implements reconcile.Reconciler
-var _ reconcile.Reconciler = &ReconcileCitcuitBreakerRule{}
+// blank assignment to verify that ReconcileSystemRules implements reconcile.Reconciler
+var _ reconcile.Reconciler = &ReconcileSystemRules{}
 
-// ReconcileCitcuitBreakerRule reconciles a CitcuitBreakerRule object
-type ReconcileCitcuitBreakerRule struct {
+// ReconcileSystemRules reconciles a SystemRules object
+type ReconcileSystemRules struct {
 	// This client, initialized using mgr.Client() above, is a split client
 	// that reads objects from the cache and writes to the apiserver
 	client client.Client
 	scheme *runtime.Scheme
 }
 
-// Reconcile reads that state of the cluster for a CitcuitBreakerRule object and makes changes based on the state read
-// and what is in the CitcuitBreakerRule.Spec
+// Reconcile reads that state of the cluster for a SystemRules object and makes changes based on the state read
+// and what is in the SystemRules.Spec
 // TODO(user): Modify this Reconcile function to implement your Controller logic.  This example creates
 // a Pod as an example
 // Note:
 // The Controller will requeue the Request to be processed again if the returned error is non-nil or
 // Result.Requeue is true, otherwise upon completion it will remove the work from the queue.
-func (r *ReconcileCitcuitBreakerRule) Reconcile(request reconcile.Request) (reconcile.Result, error) {
+func (r *ReconcileSystemRules) Reconcile(request reconcile.Request) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
-	reqLogger.Info("Reconciling CitcuitBreakerRule")
+	reqLogger.Info("Reconciling SystemRules")
 
-	// Fetch the CitcuitBreakerRule instance
-	instance := &datasourcev1.CitcuitBreakerRule{}
+	// Fetch the SystemRules instance
+	instance := &datasourcev1.SystemRules{}
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -103,7 +103,7 @@ func (r *ReconcileCitcuitBreakerRule) Reconcile(request reconcile.Request) (reco
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
-	// Set CitcuitBreakerRule instance as the owner and controller
+	// Set SystemRules instance as the owner and controller
 	if err := controllerutil.SetControllerReference(instance, pod, r.scheme); err != nil {
 		return reconcile.Result{}, err
 	}
@@ -130,7 +130,7 @@ func (r *ReconcileCitcuitBreakerRule) Reconcile(request reconcile.Request) (reco
 }
 
 // newPodForCR returns a busybox pod with the same name/namespace as the cr
-func newPodForCR(cr *datasourcev1.CitcuitBreakerRule) *corev1.Pod {
+func newPodForCR(cr *datasourcev1.SystemRules) *corev1.Pod {
 	labels := map[string]string{
 		"app": cr.Name,
 	}

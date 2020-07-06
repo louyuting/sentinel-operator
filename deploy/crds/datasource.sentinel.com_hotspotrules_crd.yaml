@@ -8,7 +8,9 @@ spec:
     kind: HotspotRules
     listKind: HotspotRulesList
     plural: hotspotrules
-    singular: hotspotrules
+    singular: hotspotrule
+    shortNames:
+    - hrs
   scope: Namespaced
   subresources:
     status: {}
@@ -17,14 +19,10 @@ spec:
       description: HotspotRules is the Schema for the hotspotrules API
       properties:
         apiVersion:
-          description: 'APIVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          description: 'Kind is a string value representing the REST resource this object represents.'
           type: string
         kind:
-          description: 'Kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          description: 'APIVersion defines the versioned schema of this representation of an object.'
           type: string
         metadata:
           type: object
@@ -32,55 +30,87 @@ spec:
           description: HotspotRulesSpec defines the desired state of HotspotRules
           properties:
             rules:
-              description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-                Important: Run "operator-sdk generate k8s" to regenerate code after
-                modifying this file Add custom validation using kubebuilder tags:
-                https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html'
+              description: 'rules is the hot spot(frequency) rule list'
               items:
                 properties:
+                  resource:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                  metricType:
+                    type: integer
+                    format: int32
+                    enum:
+                    - 0
+                    - 1
+                  controlBehavior:
+                    type: integer
+                    format: int32
+                    enum:
+                    - 0
+                    - 1
+                  paramIndex:
+                    description: ParamIndex is the index in context arguments list.
+                    type: integer
+                    minimum: 0
+                  threshold:
+                    format: number
+                    type: float
+                  maxQueueingTimeMs:
+                    description: MaxQueueingTimeMs is the max queueing time in Throttling ControlBehavior
+                    format: int64
+                    type: integer
+                    minimum: 0
                   burstCount:
                     format: int64
                     type: integer
-                  controlBehavior:
-                    type: integer
+                    minimum: 0
                   durationInSec:
                     format: int64
                     type: integer
-                  maxQueueingTimeMs:
-                    description: MaxQueueingTimeMs is the max queueing time in Throttling
-                      ControlBehavior
-                    format: int64
-                    type: integer
-                  metricType:
-                    type: integer
-                  paramIndex:
-                    description: ParamIndex is the index in context arguments slice.
-                    type: integer
+                    minimum: 0
                   paramsMaxCapacity:
                     format: int64
                     type: integer
-                  resource:
-                    type: string
+                    minimum: 1
                   specificItems:
-                    additionalProperties:
-                      format: int64
-                      type: integer
-                    description: compress SpecificValue as string
-                    type: object
-                  threshold:
-                    format: int64
-                    type: integer
+                    description: specific item list
+                    items:
+                      description: 'specific item'
+                      properties:
+                        valKind:
+                          format: int32
+                          type: integer
+                          enum:
+                          - 0
+                          - 1
+                          - 2
+                          - 3
+                        valStr:
+                          type: string
+                          minLength: 1
+                          maxLength: 100
+                        specificThreshold:
+                          format: int64
+                          type: integer
+                          minimum: 0
+                      required:
+                      - valKind
+                      - valStr
+                      - specificThreshold
+                      type: object
+                    type: array
                 required:
-                - burstCount
-                - controlBehavior
-                - durationInSec
-                - maxQueueingTimeMs
-                - metricType
-                - paramIndex
-                - paramsMaxCapacity
                 - resource
-                - specificItems
+                - metricType
+                - controlBehavior
+                - paramIndex
                 - threshold
+                - maxQueueingTimeMs
+                - burstCount
+                - durationInSec
+                - paramsMaxCapacity
+                - specificItems
                 type: object
               type: array
           required:

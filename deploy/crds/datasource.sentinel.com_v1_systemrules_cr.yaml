@@ -4,4 +4,12 @@ metadata:
   name: example-systemrules
 spec:
   # Add fields here
-  size: 3
+  rules:
+    -
+      metricType: 0
+      triggerCount: 0.6
+      strategy: 1
+    -
+      metricType: 1
+      triggerCount: 0.7
+      strategy: 1

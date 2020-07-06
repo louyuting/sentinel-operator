@@ -8,7 +8,9 @@ spec:
     kind: FlowRules
     listKind: FlowRulesList
     plural: flowrules
-    singular: flowrules
+    singular: flowrule
+    shortNames:
+    - frs
   scope: Namespaced
   subresources:
     status: {}
@@ -17,14 +19,10 @@ spec:
       description: FlowRules is the Schema for the flowrules API
       properties:
         apiVersion:
-          description: 'APIVersion defines the versioned schema of this representation
-            of an object. Servers should convert recognized schemas to the latest
-            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          description: 'Kind is a string value representing the REST resource this object represents.'
           type: string
         kind:
-          description: 'Kind is a string value representing the REST resource this
-            object represents. Servers may infer this from the endpoint the client
-            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          description: 'APIVersion defines the versioned schema of this representation of an object.'
           type: string
         metadata:
           type: object
@@ -32,42 +30,62 @@ spec:
           description: FlowRulesSpec defines the desired state of FlowRules
           properties:
             rules:
-              description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-                Important: Run "operator-sdk generate k8s" to regenerate code after
-                modifying this file Add custom validation using kubebuilder tags:
-                https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html'
+              description: 'rules is the flow rule list'
               items:
                 properties:
-                  controlBehavior:
-                    type: integer
-                  count:
-                    type: string
-                  limitOrigin:
-                    type: string
-                  maxQueueingTimeMs:
-                    format: int32
-                    type: integer
-                  metricType:
-                    type: integer
-                  refResource:
-                    type: string
-                  relationStrategy:
-                    type: integer
                   resource:
                     type: string
+                    minLength: 1
+                    maxLength: 100
+                  limitOrigin:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                  metricType:
+                    type: integer
+                    format: int32
+                    enum:
+                    - 0
+                    - 1
+                  count:
+                    type: number
+                    format: float
+                  relationStrategy:
+                    type: integer
+                    format: int32
+                    enum:
+                    - 0
+                    - 1
+                  controlBehavior:
+                    type: integer
+                    format: int32
+                    enum:
+                    - 0
+                    - 1
+                    - 2
+                    - 3
+                  refResource:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
                   warmUpPeriodSec:
                     format: int32
                     type: integer
+                    minimum: 0
+                  maxQueueingTimeMs:
+                    format: int32
+                    type: integer
+                    minimum: 0
                 required:
-                - controlBehavior
-                - count
-                - limitOrigin
-                - maxQueueingTimeMs
-                - metricType
-                - refResource
-                - relationStrategy
                 - resource
+                - limitOrigin
+                - metricType
+                - count
+                - relationStrategy
+                - controlBehavior
+                - refResource
                 - warmUpPeriodSec
+                - maxQueueingTimeMs
                 type: object
               type: array
           required:

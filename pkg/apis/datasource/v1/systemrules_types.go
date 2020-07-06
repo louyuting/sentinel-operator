@@ -8,9 +8,9 @@ import (
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 type SystemRule struct {
-	MetricType   int    `json:"metricType"`
-	TriggerCount string `json:"triggerCount"`
-	Strategy     int    `json:"strategy"`
+	MetricType   int     `json:"metricType"`
+	TriggerCount float64 `json:"triggerCount"`
+	Strategy     int     `json:"strategy"`
 }
 
 // SystemRulesSpec defines the desired state of SystemRules

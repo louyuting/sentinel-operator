@@ -1,4 +1,4 @@
-package flowrule
+package flowrules
 
 import (
 	"context"
@@ -19,14 +19,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-var log = logf.Log.WithName("controller_flowrule")
+var log = logf.Log.WithName("controller_flowrules")
 
 /**
 * USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own Controller
 * business logic.  Delete these comments after modifying this file.*
  */
 
-// Add creates a new FlowRUle Controller and adds it to the Manager. The Manager will set fields on the Controller
+// Add creates a new FlowRules Controller and adds it to the Manager. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
 func Add(mgr manager.Manager) error {
 	return add(mgr, newReconciler(mgr))
@@ -34,28 +34,28 @@ func Add(mgr manager.Manager) error {
 
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	return &ReconcileFlowRUle{client: mgr.GetClient(), scheme: mgr.GetScheme()}
+	return &ReconcileFlowRules{client: mgr.GetClient(), scheme: mgr.GetScheme()}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
 func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	// Create a new controller
-	c, err := controller.New("flowrule-controller", mgr, controller.Options{Reconciler: r})
+	c, err := controller.New("flowrules-controller", mgr, controller.Options{Reconciler: r})
 	if err != nil {
 		return err
 	}
 
-	// Watch for changes to primary resource FlowRUle
-	err = c.Watch(&source.Kind{Type: &datasourcev1.FlowRUle{}}, &handler.EnqueueRequestForObject{})
+	// Watch for changes to primary resource FlowRules
+	err = c.Watch(&source.Kind{Type: &datasourcev1.FlowRules{}}, &handler.EnqueueRequestForObject{})
 	if err != nil {
 		return err
 	}
 
 	// TODO(user): Modify this to be the types you create that are owned by the primary resource
-	// Watch for changes to secondary resource Pods and requeue the owner FlowRUle
+	// Watch for changes to secondary resource Pods and requeue the owner FlowRules
 	err = c.Watch(&source.Kind{Type: &corev1.Pod{}}, &handler.EnqueueRequestForOwner{
 		IsController: true,
-		OwnerType:    &datasourcev1.FlowRUle{},
+		OwnerType:    &datasourcev1.FlowRules{},
 	})
 	if err != nil {
 		return err
@@ -64,30 +64,30 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	return nil
 }
 
-// blank assignment to verify that ReconcileFlowRUle implements reconcile.Reconciler
-var _ reconcile.Reconciler = &ReconcileFlowRUle{}
+// blank assignment to verify that ReconcileFlowRules implements reconcile.Reconciler
+var _ reconcile.Reconciler = &ReconcileFlowRules{}
 
-// ReconcileFlowRUle reconciles a FlowRUle object
-type ReconcileFlowRUle struct {
+// ReconcileFlowRules reconciles a FlowRules object
+type ReconcileFlowRules struct {
 	// This client, initialized using mgr.Client() above, is a split client
 	// that reads objects from the cache and writes to the apiserver
 	client client.Client
 	scheme *runtime.Scheme
 }
 
-// Reconcile reads that state of the cluster for a FlowRUle object and makes changes based on the state read
-// and what is in the FlowRUle.Spec
+// Reconcile reads that state of the cluster for a FlowRules object and makes changes based on the state read
+// and what is in the FlowRules.Spec
 // TODO(user): Modify this Reconcile function to implement your Controller logic.  This example creates
 // a Pod as an example
 // Note:
 // The Controller will requeue the Request to be processed again if the returned error is non-nil or
 // Result.Requeue is true, otherwise upon completion it will remove the work from the queue.
-func (r *ReconcileFlowRUle) Reconcile(request reconcile.Request) (reconcile.Result, error) {
+func (r *ReconcileFlowRules) Reconcile(request reconcile.Request) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
-	reqLogger.Info("Reconciling FlowRUle")
+	reqLogger.Info("Reconciling FlowRules")
 
-	// Fetch the FlowRUle instance
-	instance := &datasourcev1.FlowRUle{}
+	// Fetch the FlowRules instance
+	instance := &datasourcev1.FlowRules{}
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -103,7 +103,7 @@ func (r *ReconcileFlowRUle) Reconcile(request reconcile.Request) (reconcile.Resu
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
-	// Set FlowRUle instance as the owner and controller
+	// Set FlowRules instance as the owner and controller
 	if err := controllerutil.SetControllerReference(instance, pod, r.scheme); err != nil {
 		return reconcile.Result{}, err
 	}
@@ -130,7 +130,7 @@ func (r *ReconcileFlowRUle) Reconcile(request reconcile.Request) (reconcile.Resu
 }
 
 // newPodForCR returns a busybox pod with the same name/namespace as the cr
-func newPodForCR(cr *datasourcev1.FlowRUle) *corev1.Pod {
+func newPodForCR(cr *datasourcev1.FlowRules) *corev1.Pod {
 	labels := map[string]string{
 		"app": cr.Name,
 	}

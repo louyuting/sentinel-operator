@@ -8,15 +8,15 @@ import (
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 type FlowRule struct {
-	Resource          string `json:"resource"`
-	LimitOrigin       string `json:"limitOrigin"`
-	MetricType        int    `json:"metricType"`
-	Count             string `json:"count"`
-	RelationStrategy  int    `json:"relationStrategy"`
-	ControlBehavior   int    `json:"controlBehavior"`
-	RefResource       string `json:"refResource"`
-	WarmUpPeriodSec   uint32 `json:"warmUpPeriodSec"`
-	MaxQueueingTimeMs uint32 `json:"maxQueueingTimeMs"`
+	Resource          string  `json:"resource"`
+	LimitOrigin       string  `json:"limitOrigin"`
+	MetricType        int     `json:"metricType"`
+	Count             float64 `json:"count"`
+	RelationStrategy  int     `json:"relationStrategy"`
+	ControlBehavior   int     `json:"controlBehavior"`
+	RefResource       string  `json:"refResource"`
+	WarmUpPeriodSec   uint32  `json:"warmUpPeriodSec"`
+	MaxQueueingTimeMs uint32  `json:"maxQueueingTimeMs"`
 }
 
 // FlowRulesSpec defines the desired state of FlowRules
